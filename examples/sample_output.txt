@@ -1,0 +1,121 @@
+SAS Data Quality Assessment Program - Sample Output
+=====================================================
+
+EXECUTION SUMMARY:
+─────────────────
+Program: sashelp_dqchecks.sas v1.0
+Execution Date: 30JAN2026
+Dataset: sashelp.cars
+Total Records: 428
+Total Columns: 15
+Execution Time: ~25 seconds
+
+QUALITY ASSESSMENT RESULTS:
+──────────────────────────
+
+STEP 1: DATA PROFILING
+━━━━━━━━━━━━━━━━━━━━━━
+Total Rows: 428
+Columns: Make, Model, Type, Origin, DriveTrain, EngineSize, Cylinders, 
+         Horsepower, MPG_City, MPG_Highway, Weight, Length, Wheelbase, 
+         MSRP, Invoice
+✓ Dataset accessible and complete
+
+STEP 2: MISSING VALUES ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Make:        0 missing (0%)
+Model:       0 missing (0%)
+Type:        0 missing (0%)
+Origin:      0 missing (0%)
+Horsepower:  0 missing (0%)
+MPG_City:    0 missing (0%)
+✓ 100% Complete - No missing values detected
+
+STEP 3: CARDINALITY ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Model:      425 distinct (Very High) → Potential key
+Make:        38 distinct (High)       → Good dimension
+Type:         6 distinct (Low)        → Categorical
+Origin:       3 distinct (Very Low)   → Categorical
+✓ Good dimensional structure
+
+STEP 4: DUPLICATE DETECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mercedes-Benz C320 4dr:     2 occurrences (likely trim variants)
+Infiniti G35 4dr:           2 occurrences (likely trim variants)
+Mercedes-Benz C240 4dr:     2 occurrences (likely trim variants)
+✓ 99% Unique - No problematic duplicates
+
+STEP 5: STATISTICAL ANOMALIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MSRP:         Min=$10,280   Max=$192,465  Avg=$32,774   StdDev=$19,432
+Horsepower:   Min=73 HP     Max=500 HP    Avg=216 HP    StdDev=72 HP
+MPG_City:     Min=10        Max=60        Avg=20        StdDev=6
+Weight:       Min=1,850 lbs Max=7,190 lbs Avg=3,578 lbs StdDev=758 lbs
+Negative Values: 0 detected
+✓ 100% Accurate - All values valid
+
+STEP 6: DOMAIN VALIDATION RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Price > 0:                    428/428 PASS (100%)
+MPG in [10-60]:              428/428 PASS (100%)
+Horsepower > 0:              428/428 PASS (100%)
+Origin in {USA,Europe,Asia}: 428/428 PASS (100%)
+✓ 100% Compliant - All rules pass
+
+STEP 7: QUALITY SCORECARD
+━━━━━━━━━━━━━━━━━━━━━━━━
+Completeness:  100%  ✓  No missing values
+Uniqueness:    99%   ✓  Minimal duplicates
+Validity:      100%  ✓  All rules pass
+Accuracy:      100%  ✓  No invalid ranges
+Consistency:   100%  ✓  Domain compliant
+Outliers:      95%   ✓  Valid business extremes
+
+STEP 8: EXTREME VALUES DETECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Porsche 911 GT2:              $192,465 (477 HP)
+Mercedes-Benz CL600:          $128,420 (493 HP)
+Mercedes-Benz SL600:          $126,670 (493 HP)
+Mercedes-Benz SL55 AMG:       $121,770 (493 HP)
+Dodge Viper SRT-10:           $81,795  (500 HP)
+✓ Valid business outliers - Expected for premium vehicles
+
+STEP 9: OVERALL QUALITY ASSESSMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Dataset:             sashelp.cars
+Report Date:         30JAN2026
+Total Records:       428
+Quality Score:       98.8%
+Rating:              EXCELLENT
+Status:              PRODUCTION READY ✓
+
+Assessment:
+"Dataset is 100% complete with no data integrity issues. 
+All business validation rules pass. Suitable for immediate use 
+in analytics and reporting pipelines."
+
+Recommendations:
+1. Monitor for new Make entries (alert if >45)
+2. Enforce price range validation: $10,000 - $200,000
+3. Enforce MPG range validation: 10 - 60 (city)
+4. Enforce Horsepower > 0
+5. Enforce Origin values: USA, Europe, Asia only
+
+╔════════════════════════════════════════════════════════════════╗
+║  FINAL RESULT: 98.8% EXCELLENT - PRODUCTION READY ✓            ║
+╚════════════════════════════════════════════════════════════════╝
+
+FINAL SUMMARY TABLE:
+───────────────────
+Check_Name              Status      Details
+────────────────────────────────────────────────────────────────
+Data Profiling          Complete    428 rows, 15 columns
+Missing Values          Pass        100% complete
+Cardinality             Pass        Good structure (38 brands, 425 models)
+Duplicates              Pass        3 benign near-duplicates
+Anomalies               Pass        All in valid range
+Domain Rules            Pass        100% compliant (4/4 rules)
+Overall Quality         EXCELLENT   98.8% - Production ready
+────────────────────────────────────────────────────────────────
+
